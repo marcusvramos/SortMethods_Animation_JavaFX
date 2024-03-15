@@ -1,23 +1,22 @@
-package com.rheannagallego;
+package org.example.trabalho02_po;
 
-import com.rheannagallego.view.MainWindow;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.example.trabalho02_po.view.MainWindow;
 
 public class Main extends Application {
-
-    private MainWindow mainWindow;
-
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        mainWindow = new MainWindow();
+    public void start(Stage primaryStage) {
+        MainWindow mainWindow = new MainWindow();
 
         Scene scene = new Scene(mainWindow, 900, 600);
-        scene.getStylesheets().add(this.getClass().getResource("Resources/styles.css").toExternalForm());
+        String css = this.getClass().getResource("/styles.css").toExternalForm();
+        scene.getStylesheets().add(css);
 
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Hello World");
+        primaryStage.setMaximized(true);
+        primaryStage.setTitle("Ordenação de Botões com Animação");
         primaryStage.show();
     }
 

@@ -4,16 +4,29 @@
     -fx-background-color: #f0f0f0;
 }
 
-.button {
-    -fx-background-color: #0078d7, linear-gradient(#428acd, #1f6098);
-    -fx-background-radius: 5;
-    -fx-background-insets: 0, 1;
-    -fx-text-fill: white;
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
+/* Estilo para o BorderPane principal para remover margens */
+.root {
+    -fx-padding: 100px;
 }
 
-.button:hover {
-    -fx-background-color: #e81123, linear-gradient(#f06c64, #d93a3a);
+/* Estilos para o botão de início */
+.button.start-button {
+    -fx-background-color: #ff9800; /* Cor laranja */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+
+/* Adiciona estilos para os botões em geral, se ainda não houver */
+.button {
+    -fx-background-color: #336dcc;
+    -fx-border-color: #c0c0c0;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
 }
 
 .vbox {
@@ -25,3 +38,12 @@
     -fx-spacing: 10px;
     -fx-alignment: center;
 }
+
+.button-highlight {
+    -fx-background-color: #ff6f61, linear-gradient(#ff745c, #ff6659);
+    -fx-background-insets: 0, 1;
+    -fx-background-radius: 5;
+    -fx-padding: 5;
+    -fx-text-fill: #ffffff;
+}
+
