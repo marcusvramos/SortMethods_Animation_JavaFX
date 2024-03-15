@@ -1,0 +1,27 @@
+.root {
+    -fx-font-family: 'Arial';
+    -fx-base: #202020;
+    -fx-background-color: #f0f0f0;
+}
+
+.button {
+    -fx-background-color: #0078d7, linear-gradient(#428acd, #1f6098);
+    -fx-background-radius: 5;
+    -fx-background-insets: 0, 1;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
+}
+
+.button:hover {
+    -fx-background-color: #e81123, linear-gradient(#f06c64, #d93a3a);
+}
+
+.vbox {
+    -fx-spacing: 20px;
+    -fx-alignment: center;
+}
+
+.hbox {
+    -fx-spacing: 10px;
+    -fx-alignment: center;
+}
