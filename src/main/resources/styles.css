@@ -10,8 +10,26 @@
 }
 
 /* Estilos para o botão de início */
-.button.start-button {
-    -fx-background-color: #ff9800; /* Cor laranja */
+.button.start-comb-button {
+    -fx-background-color: #c28c2f; /* Cor laranja */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.button.start-shell-button {
+    -fx-background-color: #34942c; /* Cor azul */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.button.reset-button {
+    -fx-background-color: #ff6f61; /* Cor vermelha */
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-padding: 10 20;
