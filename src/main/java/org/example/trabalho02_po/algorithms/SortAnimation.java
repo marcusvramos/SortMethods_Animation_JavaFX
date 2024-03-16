@@ -17,7 +17,7 @@ public abstract class SortAnimation {
 
     public SortAnimation(ButtonPane buttonPane) {
         this.buttonPane = buttonPane;
-        initializeButtonOrder(); // Garantindo a inicialização imediata
+        initializeButtonOrder();
     }
 
     protected final void addTransition(int fromIndex, int toIndex) {

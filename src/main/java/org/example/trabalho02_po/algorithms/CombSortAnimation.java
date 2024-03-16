@@ -67,7 +67,6 @@ public class CombSortAnimation extends SortAnimation {
     @Override
     public void playAnimation() {
         initializeButtonOrder();
-        //go through transitions stored in the sort method and add a Translate Transition for each entry
         for(int i = 0; i < transitions.size(); i++) {
             animateIterative(true, i);
         }

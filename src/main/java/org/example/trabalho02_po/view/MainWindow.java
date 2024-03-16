@@ -13,8 +13,6 @@ import org.example.trabalho02_po.algorithms.ShellSortAnimation;
 public class MainWindow extends BorderPane {
     private ButtonPane buttonPane;
 
-    private VBox vbox;
-
     private TextArea codeArea;
 
     private final String shellSortCode = """
@@ -123,7 +121,6 @@ public class MainWindow extends BorderPane {
     }
 
     private void resetUI() {
-        this.getChildren().remove(vbox);
         buttonPane.resetToOriginalState();
         setupUI();
         codeArea.clear();
