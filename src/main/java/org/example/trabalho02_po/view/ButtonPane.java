@@ -46,6 +46,11 @@ public class ButtonPane extends HBox {
         this.requestLayout(); // Solicita que o layout seja recalculado
     }
 
+    public void highlightComparingButtons(int i, int j) {
+        buttons.get(i).setStyle("-fx-background-color: #ff0000");
+        buttons.get(j).setStyle("-fx-background-color: #ff0000");
+    }
+
     public List<Button> getButtons() {
         return buttons;
     }

@@ -16,30 +16,24 @@ public class MainWindow extends BorderPane {
     private TextArea codeArea;
 
     private final String shellSortCode = """
-            private void shellSort(int[] arr) {
-                int n = arr.length;
-                int i, j, aux, dist = 1;
-
-                while (dist < n) {
-                    dist = 3 * dist + 1;
-                }
-                dist = dist / 3;
-
-                while (dist > 0) {
-                    for (i = dist; i < n; i++) {
-                        aux = arr[i];
-                        j = i;
-                        while (j >= dist && arr[j - dist] > aux) {
-                            arr[j] = arr[j - dist];
-                            addTransition(j, j - dist);
-                            j = j - dist;
+        private void sort(int[] arr) {
+            int j, newElement;
+            int gap = arr.length / 2;
+            
+            while(gap > 0) {
+                for (int i = gap; i < arr.length; i++) {
+                    newElement = arr[i];
+                    for(j = i - gap; j >= 0; j = j - gap) {
+                        if (newElement < arr[j]) {
+                            arr[j + gap] = arr[j];
+                            arr[j] = newElement;
                         }
-                        arr[j] = aux;
                     }
-                    dist = dist / 3;
                 }
+                gap = gap / 2;
             }
-            """;
+        }
+        """;
     private final String combSortCode = """
             public void combSort(int[] arr) {
                 int n = arr.length;
@@ -61,6 +55,8 @@ public class MainWindow extends BorderPane {
             }
             """;
 
+    private TextArea variablesArea;
+
 
     public MainWindow() {
         setupUI();
@@ -68,11 +64,25 @@ public class MainWindow extends BorderPane {
 
     private void setupUI() {
         buttonPane = new ButtonPane();
-        setupButtons();
+        setupVariablesArea();
         setupCodeArea();
+        HBox actionButtons = setupButtons();
+
+        VBox leftContainer = new VBox(10);
+        leftContainer.getChildren().addAll(actionButtons, buttonPane, variablesArea);
+        leftContainer.setAlignment(Pos.TOP_LEFT);
+
+        VBox.setMargin(buttonPane, new Insets(20, 0, 0, 0));
+
+        VBox.setMargin(variablesArea, new Insets(20, 0, 0, 0));
+
+        this.setLeft(leftContainer);
+        this.setRight(codeArea);
     }
 
-    private void setupButtons() {
+
+
+    private HBox setupButtons() {
         Button startCombSortButton = new Button("Iniciar ordenação por CombSort");
         startCombSortButton.getStyleClass().add("start-comb-button");
         startCombSortButton.setOnAction(e -> {
@@ -97,26 +107,40 @@ public class MainWindow extends BorderPane {
         VBox vbox = new VBox(20, hbox, buttonPane);
         vbox.setAlignment(Pos.TOP_LEFT);
         this.setLeft(vbox);
+        return hbox;
     }
+
+    private void setupVariablesArea() {
+        variablesArea = new TextArea();
+        variablesArea.setEditable(false);
+        variablesArea.setFont(javafx.scene.text.Font.font("Consolas", 20));
+        variablesArea.setPadding(new Insets(10));
+        variablesArea.setPrefHeight(135);
+        variablesArea.setStyle("-fx-padding: 5;" +
+                "-fx-control-inner-background: #f0f0f0;");
+    }
+
 
     private void setupCodeArea() {
         codeArea = new TextArea();
         codeArea.setEditable(false);
         codeArea.setFont(javafx.scene.text.Font.font("Consolas", 19));
         codeArea.setPadding(new Insets(10));
-        codeArea.setPrefHeight(620);
+        codeArea.setPrefHeight(500);
         VBox rightPane = new VBox(codeArea);
         rightPane.setPadding(new Insets(10));
+        codeArea.setStyle("-fx-padding: 8;" +
+                "-fx-control-inner-background: #adadad;");
         this.setRight(rightPane);
     }
 
     private void startCombSort() {
-        CombSortAnimation combSortAnimation = new CombSortAnimation(buttonPane, codeArea);
+        CombSortAnimation combSortAnimation = new CombSortAnimation(buttonPane, codeArea, variablesArea);
         combSortAnimation.startSort();
     }
 
     private void startShellSort() {
-        ShellSortAnimation shellSortAnimation = new ShellSortAnimation(buttonPane, codeArea);
+        ShellSortAnimation shellSortAnimation = new ShellSortAnimation(buttonPane, codeArea, variablesArea);
         shellSortAnimation.startSort();
     }
 
@@ -124,6 +148,7 @@ public class MainWindow extends BorderPane {
         buttonPane.resetToOriginalState();
         setupUI();
         codeArea.clear();
+        variablesArea.clear();
     }
 }
 

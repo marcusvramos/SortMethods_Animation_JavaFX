@@ -1,8 +1,10 @@
 package org.example.trabalho02_po.algorithms;
 
+import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.util.Duration;
 import org.example.trabalho02_po.view.ButtonPane;
 
@@ -42,29 +44,56 @@ public abstract class SortAnimation {
         }
     }
 
-    protected void animateIterative(boolean isVariance, int transitionIdx) {
-        Integer[] currentTransition = transitions.get(transitionIdx);
-        int fromIndex = currentTransition[0];
-        int toIndex = currentTransition[1];
-
+    protected void animateIterative(int fromIndex, int toIndex) {
         Button fromButton = buttonPane.getButtons().get(buttonOrder[fromIndex]);
         Button toButton = buttonPane.getButtons().get(buttonOrder[toIndex]);
 
-        int variance = isVariance ? Math.abs(fromIndex - toIndex) : 1;
+        double spacing = 30;
+        double buttonWidth = fromButton.getWidth();
+        double deltaX = (toIndex - fromIndex) * (buttonWidth + spacing);
 
-        applyTranslateTransition(variance, fromButton, 1);
-        applyTranslateTransition(variance, toButton, -1);
+        TranslateTransition ttFrom = new TranslateTransition(Duration.millis(1000), fromButton);
+        ttFrom.setByX(deltaX);
+        ttFrom.setOnFinished(e -> fromButton.setLayoutX(fromButton.getLayoutX() + deltaX));
+
+        TranslateTransition ttTo = new TranslateTransition(Duration.millis(1000), toButton);
+        ttTo.setByX(-deltaX);
+        ttTo.setOnFinished(e -> toButton.setLayoutX(toButton.getLayoutX() - deltaX));
+
+        sequence.getChildren().addAll(ttFrom, ttTo);
 
         swap(buttonOrder, fromIndex, toIndex);
     }
 
-    private void applyTranslateTransition(int variance, Button button, int direction) {
-        TranslateTransition tt = new TranslateTransition(Duration.millis(1000), button);
-        tt.setByX(80 * (variance) * direction);
-        sequence.getChildren().add(tt);
+    protected void highlightLine(int lineNumber, String code, TextArea codeArea) {
+        String[] lines = code.split("\n");
+
+        StringBuilder highlightedText = new StringBuilder();
+        for (int i = 0; i < lines.length; i++) {
+            if (i == lineNumber - 1) {
+                highlightedText.append(">> ").append(lines[i]).append("\n");
+            } else {
+                highlightedText.append(lines[i]).append("\n");
+            }
+        }
+
+        javafx.application.Platform.runLater(() -> {
+            codeArea.setText(highlightedText.toString());
+            codeArea.selectRange(highlightedText.indexOf(">> "), highlightedText.indexOf("\n", highlightedText.indexOf(">>"))); // Opcional: destaca o texto no TextArea
+        });
     }
 
-    public abstract void playAnimation();
+    protected PauseTransition createHighlightTransition(Button button) {
+        PauseTransition highlight = new PauseTransition(Duration.millis(1));
+        highlight.setOnFinished(e -> button.getStyleClass().add("highlight"));
+        return highlight;
+    }
+
+    protected PauseTransition createUnhighlightTransition(Button button) {
+        PauseTransition unhighlight = new PauseTransition(Duration.millis(1));
+        unhighlight.setOnFinished(e -> button.getStyleClass().remove("highlight"));
+        return unhighlight;
+    }
 
     public abstract void startSort();
 }

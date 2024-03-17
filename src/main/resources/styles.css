@@ -47,6 +47,10 @@
     -fx-background-radius: 5;
 }
 
+.button.highlight {
+    -fx-background-color: #e0ad2b; /* ou qualquer cor que preferir */
+}
+
 .vbox {
     -fx-spacing: 20px;
     -fx-alignment: center;
@@ -55,13 +59,5 @@
 .hbox {
     -fx-spacing: 10px;
     -fx-alignment: center;
-}
-
-.button-highlight {
-    -fx-background-color: #ff6f61, linear-gradient(#ff745c, #ff6659);
-    -fx-background-insets: 0, 1;
-    -fx-background-radius: 5;
-    -fx-padding: 5;
-    -fx-text-fill: #ffffff;
 }
 
