@@ -22,10 +22,6 @@ public abstract class SortAnimation {
         initializeButtonOrder();
     }
 
-    protected final void addTransition(int fromIndex, int toIndex) {
-        transitions.add(new Integer[]{toIndex, fromIndex});
-    }
-
     protected final void swap(int[] arr, int i, int j) {
         int temp = arr[i];
         arr[i] = arr[j];

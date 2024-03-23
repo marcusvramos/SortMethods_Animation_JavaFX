@@ -28,6 +28,15 @@
     -fx-background-radius: 5;
 }
 
+.button.start-shell02-button {
+    -fx-background-color: #397633; /* Cor azul */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
 .button.reset-button {
     -fx-background-color: #ff6f61; /* Cor vermelha */
     -fx-text-fill: white;
@@ -60,4 +69,39 @@
     -fx-spacing: 10px;
     -fx-alignment: center;
 }
+
+.highlight-aux {
+    /* Estilo para o botão que está sendo usado como 'aux' */
+    -fx-border-color: blue;
+    -fx-border-width: 2px;
+}
+
+.copy-highlight {
+    /* Estilo para representar que um valor foi "copiado" para este botão */
+    -fx-background-color: yellow;
+}
+
+.highlight-final {
+    /* Estilo para o botão que recebe o valor final do 'aux' */
+    -fx-border-color: green;
+    -fx-border-width: 2px;
+}
+
+.button-comparing {
+    -fx-border-color: red;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+}
+
+.button-aux {
+    -fx-border-color: green;
+    -fx-border-width: 2px;
+    -fx-border-style: dashed;
+}
+
+.button-copying {
+    -fx-background-color: yellow;
+}
+
+
 
