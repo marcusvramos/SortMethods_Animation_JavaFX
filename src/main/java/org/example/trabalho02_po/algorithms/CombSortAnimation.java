@@ -77,8 +77,8 @@ public class CombSortAnimation extends SortAnimation {
                     sequence.getChildren().add(createHighlightPause(9));
                     final Button buttonToHighlight = buttonPane.getButtons().get(index+gap);
                     final Button currentButton = buttonPane.getButtons().get(index);
-                    PauseTransition highlight = createHighlightTransition(buttonToHighlight);
-                    PauseTransition highlightCurrent = createHighlightTransition(currentButton);
+                    PauseTransition highlight = createHighlightTransition(buttonToHighlight, "orange");
+                    PauseTransition highlightCurrent = createHighlightTransition(currentButton, "orange");
 
                     // Configura a duração do destaque antes de remover
                     PauseTransition delay = new PauseTransition(Duration.millis(500));

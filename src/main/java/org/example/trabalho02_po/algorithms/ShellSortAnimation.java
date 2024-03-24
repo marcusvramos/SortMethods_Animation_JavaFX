@@ -77,8 +77,8 @@ public class ShellSortAnimation extends SortAnimation {
                     if (aux < arr[j]) {
                         final Button buttonToHighlight = buttonPane.getButtons().get(i);
                         final Button currentButton = buttonPane.getButtons().get(j);
-                        PauseTransition highlight = createHighlightTransition(buttonToHighlight);
-                        PauseTransition highlightCurrent = createHighlightTransition(currentButton);
+                        PauseTransition highlight = createHighlightTransition(buttonToHighlight, "orange");
+                        PauseTransition highlightCurrent = createHighlightTransition(currentButton, "orange");
                         PauseTransition delay = new PauseTransition(Duration.millis(500));
                         sequence.getChildren().addAll(highlight, highlightCurrent, delay);
 

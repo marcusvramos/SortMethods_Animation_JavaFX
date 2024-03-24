@@ -79,15 +79,15 @@ public abstract class SortAnimation {
         });
     }
 
-    protected PauseTransition createHighlightTransition(Button button) {
+    protected PauseTransition createHighlightTransition(Button button, String color) {
         PauseTransition highlight = new PauseTransition(Duration.millis(1));
-        highlight.setOnFinished(e -> button.getStyleClass().add("highlight"));
+        highlight.setOnFinished(e -> button.setStyle("-fx-background-color: " + color));
         return highlight;
     }
 
     protected PauseTransition createUnhighlightTransition(Button button) {
         PauseTransition unhighlight = new PauseTransition(Duration.millis(1));
-        unhighlight.setOnFinished(e -> button.getStyleClass().remove("highlight"));
+        unhighlight.setOnFinished(e -> button.setStyle(""));
         return unhighlight;
     }
 

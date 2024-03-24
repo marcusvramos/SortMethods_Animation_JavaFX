@@ -77,22 +77,30 @@ public class ShellSortCopyAnimation extends SortAnimation {
                 aux = arr[i];
                 sequence.getChildren().add(createHighlightPause(10));
                 addVariableUpdateToSequence(i, 0, aux, dist);
-                moveButtonUp(buttonPane.getButtons().get(i));
+                Button ButtonAux = buttonPane.getButtons().get(i);
+                moveButtonUp(ButtonAux);
 
                 j = i;
                 sequence.getChildren().add(createHighlightPause(11));
                 addVariableUpdateToSequence(i, j, aux, dist);
 
                 while (j >= dist && arr[j - dist] > aux) {
+                    Button compareButton01 = buttonPane.getButtons().get(j - dist);
+                    Button compareButton02 = buttonPane.getButtons().get(j);
+
+                    PauseTransition highlight01 = createHighlightTransition(compareButton01, "green");
+                    PauseTransition highlight02 = createHighlightTransition(compareButton02, "green");
+                    sequence.getChildren().addAll(highlight01, highlight02);
+
                     sequence.getChildren().add(createHighlightPause(12));
-
                     arr[j] = arr[j - dist];
+
                     sequence.getChildren().add(createHighlightPause(13));
+                    copyButtonValue(buttonPane.getButtons().get(j - dist), buttonPane.getButtons().get(j));
 
-                    final int fromIndex = j - dist;
-                    final int toIndex = j;
-
-                    copyButtonValue(buttonPane.getButtons().get(fromIndex), buttonPane.getButtons().get(toIndex));
+                    PauseTransition unhighlight01 = createUnhighlightTransition(compareButton01);
+                    PauseTransition unhighlight02 = createUnhighlightTransition(compareButton02);
+                    sequence.getChildren().addAll(unhighlight01, unhighlight02);
 
                     j = j - dist;
                     sequence.getChildren().add(createHighlightPause(14));
@@ -101,11 +109,10 @@ public class ShellSortCopyAnimation extends SortAnimation {
                 sequence.getChildren().add(createHighlightPause(15));
 
                 arr[j] = aux;
-                sequence.getChildren().add(createHighlightPause(16));
-
-                putAuxValue(buttonPane.getButtons().get(j), aux);
 
                 moveButtonDown(buttonPane.getButtons().get(i));
+                sequence.getChildren().add(createHighlightPause(16));
+                putAuxValue(buttonPane.getButtons().get(j), aux);
             }
             sequence.getChildren().add(createHighlightPause(18));
 
@@ -123,7 +130,7 @@ public class ShellSortCopyAnimation extends SortAnimation {
     }
 
     public void updateVariablesDisplay(int i, int j, int aux, int dist) {
-        String variablesText = String.format("i: %d\nj: %d\naux: %d\ndist: %d\n", i, j, aux, dist);
+        String variablesText = String.format("i: %d\nj: %d\naux: %d\ndist: %d\n(j-dist): %d\n", i, j, aux, dist, j-dist);
         variablesArea.setText(variablesText);
     }
 
@@ -135,14 +142,14 @@ public class ShellSortCopyAnimation extends SortAnimation {
 
     private void moveButtonDown(Button button) {
         TranslateTransition moveDown = new TranslateTransition(Duration.millis(300), button);
-        moveDown.setByY(10); // Ajuste conforme necessário.
-        sequence.getChildren().add(moveDown); // Adiciona à sequência em vez de executar imediatamente.
+        moveDown.setByY(80);
+        sequence.getChildren().add(moveDown);
     }
 
     private void moveButtonUp(Button button) {
         TranslateTransition moveUp = new TranslateTransition(Duration.millis(300), button);
-        moveUp.setByY(-10); // Ajuste conforme necessário.
-        sequence.getChildren().add(moveUp); // Adiciona à sequência em vez de executar imediatamente.
+        moveUp.setByY(-80);
+        sequence.getChildren().add(moveUp);
     }
 
     private void copyButtonValue(Button fromButton, Button toButton) {
@@ -152,13 +159,10 @@ public class ShellSortCopyAnimation extends SortAnimation {
         FadeTransition fadeIn = new FadeTransition(Duration.millis(250), toButton);
         fadeIn.setToValue(1.0);
 
-        // Configura o que acontece quando o fade out termina
         fadeOut.setOnFinished(e -> toButton.setText(fromButton.getText()));
 
-        // Cria uma sequência para fade out, atualização do texto e fade in.
         SequentialTransition fadeSequence = new SequentialTransition(fadeOut, fadeIn);
 
-        // Adiciona a sequência de fade à sequência geral
         sequence.getChildren().add(fadeSequence);
     }
 
@@ -169,13 +173,10 @@ public class ShellSortCopyAnimation extends SortAnimation {
         FadeTransition fadeIn = new FadeTransition(Duration.millis(250), button);
         fadeIn.setToValue(1.0);
 
-        // Configura o que acontece quando o fade out termina
         fadeOut.setOnFinished(e -> button.setText(String.valueOf(auxValue)));
 
-        // Cria uma sequência para fade out, atualização do texto e fade in.
         SequentialTransition fadeSequence = new SequentialTransition(fadeOut, fadeIn);
 
-        // Adiciona a sequência de fade à sequência geral
         sequence.getChildren().add(fadeSequence);
     }
 

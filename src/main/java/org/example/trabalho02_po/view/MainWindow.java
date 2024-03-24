@@ -145,7 +145,7 @@ public class MainWindow extends BorderPane {
         variablesArea.setEditable(false);
         variablesArea.setFont(javafx.scene.text.Font.font("Consolas", 20));
         variablesArea.setPadding(new Insets(10));
-        variablesArea.setPrefHeight(135);
+        variablesArea.setPrefHeight(240);
         variablesArea.setStyle("-fx-padding: 5;" +
                 "-fx-control-inner-background: #f0f0f0;" +
                 "-fx-border-color: black;" +

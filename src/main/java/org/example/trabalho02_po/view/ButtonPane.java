@@ -29,7 +29,6 @@ public class ButtonPane extends HBox {
             button.setMinHeight(50);
             buttons.add(button);
             originalButtonValues.add(String.valueOf(value));
-            this.getChildren().add(button);
 
             Text positionText = new Text(String.valueOf(i));
             VBox buttonWithPosition = new VBox(button, positionText);
@@ -43,12 +42,7 @@ public class ButtonPane extends HBox {
         for (int i = 0; i < buttons.size(); i++) {
             buttons.get(i).setText(originalButtonValues.get(i));
         }
-        this.requestLayout(); // Solicita que o layout seja recalculado
-    }
-
-    public void highlightComparingButtons(int i, int j) {
-        buttons.get(i).setStyle("-fx-background-color: #ff0000");
-        buttons.get(j).setStyle("-fx-background-color: #ff0000");
+        this.requestLayout();
     }
 
     public List<Button> getButtons() {
