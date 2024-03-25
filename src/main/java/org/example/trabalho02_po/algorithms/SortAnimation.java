@@ -9,7 +9,10 @@ import javafx.util.Duration;
 import org.example.trabalho02_po.view.ButtonPane;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public abstract class SortAnimation {
     protected List<Integer[]> transitions = new ArrayList<>();
@@ -27,6 +30,14 @@ public abstract class SortAnimation {
         arr[i] = arr[j];
         arr[j] = temp;
     }
+
+    protected void updateButtonOrderAfterAnimation(int fromIndex, int toIndex) {
+        int temp = buttonOrder[fromIndex];
+        buttonOrder[fromIndex] = buttonOrder[toIndex];
+        buttonOrder[toIndex] = temp;
+    }
+
+
 
     protected void playSequentialTransition() {
         sequence.play();
