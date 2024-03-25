@@ -7,6 +7,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextFlow;
 import org.example.trabalho02_po.algorithms.CombSortAnimation;
 import org.example.trabalho02_po.algorithms.ShellSortAnimation;
 import org.example.trabalho02_po.algorithms.ShellSortCopyAnimation;
@@ -78,7 +79,7 @@ public class MainWindow extends BorderPane {
                 }
             """;
 
-    private TextArea variablesArea;
+    private TextFlow variablesArea;
 
 
     public MainWindow() {
@@ -141,19 +142,14 @@ public class MainWindow extends BorderPane {
     }
 
     private void setupVariablesArea() {
-        variablesArea = new TextArea();
-        variablesArea.setEditable(false);
-        variablesArea.setFont(javafx.scene.text.Font.font("Consolas", 20));
+        variablesArea = new TextFlow();
         variablesArea.setPadding(new Insets(10));
-        variablesArea.setPrefHeight(240);
-        variablesArea.setStyle("-fx-padding: 5;" +
-                "-fx-control-inner-background: #f0f0f0;" +
+        variablesArea.setMinHeight(200);
+        variablesArea.setStyle("-fx-background-color: #f0f0f0;" +
                 "-fx-border-color: black;" +
                 "-fx-border-width: 2;" +
                 "-fx-border-radius: 10;" +
                 "-fx-background-radius: 10;");
-
-
     }
 
 
@@ -192,7 +188,7 @@ public class MainWindow extends BorderPane {
         buttonPane.resetToOriginalState();
         setupUI();
         codeArea.clear();
-        variablesArea.clear();
+        variablesArea.getChildren().clear();
     }
 }
 

@@ -4,6 +4,9 @@ import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 import org.example.trabalho02_po.view.ButtonPane;
 
@@ -33,9 +36,9 @@ public class CombSortAnimation extends SortAnimation {
         }
         """;
 
-    private final TextArea variablesArea;
+    private final TextFlow variablesArea;
 
-    public CombSortAnimation(ButtonPane buttonPane, TextArea codeArea, TextArea variablesArea) {
+    public CombSortAnimation(ButtonPane buttonPane, TextArea codeArea, TextFlow variablesArea) {
         super(buttonPane);
         this.codeArea = codeArea;
         this.variablesArea = variablesArea;
@@ -46,6 +49,7 @@ public class CombSortAnimation extends SortAnimation {
         List<Button> buttons = buttonPane.getButtons();
         int[] arr = buttons.stream().mapToInt(b -> Integer.parseInt(b.getText())).toArray();
         sort(arr);
+        initializeButtonOrder();
         playSequentialTransition();
     }
 
@@ -71,19 +75,21 @@ public class CombSortAnimation extends SortAnimation {
             while((index + gap) < n) {
                 addVariableUpdateToSequence(gap, index);
                 sequence.getChildren().add(createHighlightPause(8));
+                final Button buttonToHighlight = buttonPane.getButtons().get(buttonOrder[index+gap]);
+                final Button currentButton = buttonPane.getButtons().get(buttonOrder[index]);
+                PauseTransition highlight = createHighlightTransition(buttonToHighlight, "orange");
+                PauseTransition highlightCurrent = createHighlightTransition(currentButton, "orange");
+                sequence.getChildren().addAll(highlight, highlightCurrent);
 
                 if(arr[index] > arr[index + gap]) {
+                    final Button buttonI = buttonPane.getButtons().get(buttonOrder[index+gap]);
+                    final Button indexGapButton = buttonPane.getButtons().get(buttonOrder[index]);
+                    PauseTransition highlightI = createHighlightTransition(buttonI, "orange");
+                    PauseTransition highlightCurrentGAPi = createHighlightTransition(indexGapButton, "orange");
+                    sequence.getChildren().addAll(highlightI, highlightCurrentGAPi);
+
                     addVariableUpdateToSequence(gap, index);
                     sequence.getChildren().add(createHighlightPause(9));
-                    final Button buttonToHighlight = buttonPane.getButtons().get(index+gap);
-                    final Button currentButton = buttonPane.getButtons().get(index);
-                    PauseTransition highlight = createHighlightTransition(buttonToHighlight, "orange");
-                    PauseTransition highlightCurrent = createHighlightTransition(currentButton, "orange");
-
-                    // Configura a duração do destaque antes de remover
-                    PauseTransition delay = new PauseTransition(Duration.millis(500));
-
-                    sequence.getChildren().addAll(highlight, highlightCurrent, delay);
 
                     int temp = arr[index];
                     sequence.getChildren().add(createHighlightPause(10));
@@ -94,14 +100,14 @@ public class CombSortAnimation extends SortAnimation {
                     arr[index + gap] = temp;
                     sequence.getChildren().add(createHighlightPause(12));
                     animateIterative(index + gap, index);
+                    PauseTransition unhighlight = createUnhighlightTransition(buttonI);
+                    PauseTransition unhighlightCurrent = createUnhighlightTransition(indexGapButton);
+                    sequence.getChildren().addAll(unhighlight, unhighlightCurrent);
                 }
 
-                final Button buttonToHighlight = buttonPane.getButtons().get(index+gap);
-                final Button currentButton = buttonPane.getButtons().get(index);
                 PauseTransition unhighlight = createUnhighlightTransition(buttonToHighlight);
                 PauseTransition unhighlightCurrent = createUnhighlightTransition(currentButton);
-                PauseTransition delay = new PauseTransition(Duration.millis(500));
-                sequence.getChildren().addAll(unhighlight, unhighlightCurrent, delay);
+                sequence.getChildren().addAll(unhighlight, unhighlightCurrent);
 
                 index++;
                 addVariableUpdateToSequence(gap, index);
@@ -122,9 +128,19 @@ public class CombSortAnimation extends SortAnimation {
     }
 
     public void updateVariablesDisplay(int gap, int index) {
-        String variablesText = String.format("gap: %d\nindex: %d\n(index + gap): %d\n", gap, index, index + gap);
-        Platform.runLater(() -> variablesArea.setText(variablesText));
+        Text textGap = new Text("gap: " + gap + "\n");
+        textGap.setFont(Font.font("System", 20));
+        Text textIndex = new Text("index: " + index + "\n");
+        textIndex.setFont(Font.font("System", 20));
+        Text textIndexGap = new Text("(index + gap): " + (index + gap) + "\n");
+        textIndexGap.setFont(Font.font("System", 20));
+
+        Platform.runLater(() -> {
+            variablesArea.getChildren().clear();
+            variablesArea.getChildren().addAll(textGap, textIndex, textIndexGap);
+        });
     }
+
 
     protected PauseTransition createHighlightPause(int lineNumber) {
         PauseTransition highlightPause = new PauseTransition(Duration.millis(1000));

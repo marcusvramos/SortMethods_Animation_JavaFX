@@ -1,8 +1,13 @@
 package org.example.trabalho02_po.algorithms;
 
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 import org.example.trabalho02_po.view.ButtonPane;
 
@@ -14,7 +19,7 @@ public class ShellSortAnimation extends SortAnimation {
 
     ButtonPane buttonPane;
 
-    TextArea variablesArea;
+    TextFlow variablesArea;
 
     private final String shellSortCode = """
         private void shellSort(int[] arr) {
@@ -36,7 +41,7 @@ public class ShellSortAnimation extends SortAnimation {
         }
         """;
 
-    public ShellSortAnimation(ButtonPane buttonPane, TextArea codeArea, TextArea variablesArea) {
+    public ShellSortAnimation(ButtonPane buttonPane, TextArea codeArea, TextFlow variablesArea) {
         super(buttonPane);
         this.buttonPane = buttonPane;
         this.codeArea = codeArea;
@@ -48,6 +53,7 @@ public class ShellSortAnimation extends SortAnimation {
         List<Button> buttons = buttonPane.getButtons();
         int[] arr = buttons.stream().mapToInt(b -> Integer.parseInt(b.getText())).toArray();
         sort(arr);
+        initializeButtonOrder();
         playSequentialTransition();
     }
 
@@ -75,8 +81,8 @@ public class ShellSortAnimation extends SortAnimation {
                     addVariableUpdateToSequence(i, j, gap, aux);
 
                     if (aux < arr[j]) {
-                        final Button buttonToHighlight = buttonPane.getButtons().get(i);
-                        final Button currentButton = buttonPane.getButtons().get(j);
+                        final Button buttonToHighlight = buttonPane.getButtons().get(buttonOrder[j]);
+                        final Button currentButton = buttonPane.getButtons().get(buttonOrder[j]);
                         PauseTransition highlight = createHighlightTransition(buttonToHighlight, "orange");
                         PauseTransition highlightCurrent = createHighlightTransition(currentButton, "orange");
                         PauseTransition delay = new PauseTransition(Duration.millis(500));
@@ -95,8 +101,8 @@ public class ShellSortAnimation extends SortAnimation {
 
                         animateIterative(j + gap, j);
                     }
-                    final Button buttonToHighlight = buttonPane.getButtons().get(i);
-                    final Button currentButton = buttonPane.getButtons().get(j);
+                    final Button buttonToHighlight = buttonPane.getButtons().get(buttonOrder[i]);
+                    final Button currentButton = buttonPane.getButtons().get(buttonOrder[j]);
                     PauseTransition unhighlight = createUnhighlightTransition(buttonToHighlight);
                     PauseTransition unhighlightCurrent = createUnhighlightTransition(currentButton);
                     PauseTransition delay = new PauseTransition(Duration.millis(500));
@@ -121,9 +127,23 @@ public class ShellSortAnimation extends SortAnimation {
     }
 
     public void updateVariablesDisplay(int i, int j, int gap, int aux) {
-        String variablesText = String.format("i: %d\nj: %d\ngap: %d\naux: %d\n", i, j, gap, aux);
-        variablesArea.setText(variablesText);
+        // Cria objetos Text para cada variável
+        Text textI = new Text("i: " + i + "\n");
+        textI.setFont(Font.font("System", 20));
+        Text textJ = new Text("j: " + j + "\n");
+        textJ.setFont(Font.font("System", 20));
+        Text textGap = new Text("gap: " + gap + "\n");
+        textGap.setFont(Font.font("System", 20));
+        Text textAux = new Text("aux: " + aux + "\n");
+        textAux.setFont(Font.font("System", FontWeight.BOLD, 20)); // Exemplo de fazer 'aux' em negrito
+
+        Platform.runLater(() -> {
+            variablesArea.getChildren().clear();
+            variablesArea.getChildren().addAll(textI, textJ, textGap, textAux);
+        });
+
     }
+
 
     protected PauseTransition createHighlightPause(int lineNumber) {
         PauseTransition highlightPause = new PauseTransition(Duration.millis(1000));
