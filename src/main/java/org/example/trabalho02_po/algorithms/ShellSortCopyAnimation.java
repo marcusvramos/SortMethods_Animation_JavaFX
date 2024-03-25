@@ -90,7 +90,7 @@ public class ShellSortCopyAnimation extends SortAnimation {
 
                 while (j >= dist && arr[j - dist] > aux) {
                     Button compareButton01 = buttonPane.getButtons().get(j - dist);
-                    Button compareButton02 = buttonPane.getButtons().get(findPositionByValue(aux));
+                    Button compareButton02 = buttonPane.getButtons().get(j);
 
                     PauseTransition highlight01 = createHighlightTransition(compareButton01, "green");
                     PauseTransition highlight02 = createHighlightTransition(compareButton02, "green");
@@ -136,16 +136,6 @@ public class ShellSortCopyAnimation extends SortAnimation {
             addVariableUpdateToSequence(0, 0, 0, dist);
         }
         sequence.getChildren().add(createHighlightPause(20));
-    }
-
-    private int findPositionByValue(int value) {
-        List<Button> buttons = buttonPane.getButtons();
-        for (int i = 0; i < buttons.size(); i++) {
-            if (Integer.parseInt(buttons.get(i).getText()) == value) {
-                return i;
-            }
-        }
-        return -1;
     }
 
     protected void addVariableUpdateToSequence(int i, int j, int aux, int dist) {
