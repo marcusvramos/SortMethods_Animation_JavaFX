@@ -75,12 +75,14 @@ public class CombSortAnimation extends SortAnimation {
             while((index + gap) < n) {
                 addVariableUpdateToSequence(gap, index);
                 sequence.getChildren().add(createHighlightPause(8));
+
+                sequence.getChildren().add(createHighlightPause(9));
                 final Button buttonToHighlight = buttonPane.getButtons().get(buttonOrder[index+gap]);
                 final Button currentButton = buttonPane.getButtons().get(buttonOrder[index]);
                 PauseTransition highlight = createHighlightTransition(buttonToHighlight, "orange");
                 PauseTransition highlightCurrent = createHighlightTransition(currentButton, "orange");
-                sequence.getChildren().addAll(highlight, highlightCurrent);
-
+                PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
+                sequence.getChildren().addAll(highlight, highlightCurrent, delay);
                 if(arr[index] > arr[index + gap]) {
                     final Button buttonI = buttonPane.getButtons().get(buttonOrder[index+gap]);
                     final Button indexGapButton = buttonPane.getButtons().get(buttonOrder[index]);
