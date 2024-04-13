@@ -4,6 +4,7 @@ import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -77,19 +78,23 @@ public class ShellSortAnimation extends SortAnimation {
                 addVariableUpdateToSequence(i, 0, gap, aux);
 
                 for(j = i - gap; j >= 0; j = j - gap) {
+                    Button buttonCurrent = buttonPane.getButtons().get(buttonOrder[j]);
+                    Button buttonAux = buttonPane.getButtons().get(buttonOrder[i]);
+
                     sequence.getChildren().add(createHighlightPause(8));
                     addVariableUpdateToSequence(i, j, gap, aux);
 
+                    sequence.getChildren().add(createHighlightPause(9));
+                    sequence.getChildren().add(createHighlightTransition(buttonCurrent, buttonAux, "orange"));
                     if (aux < arr[j]) {
-                        final Button buttonToHighlight = buttonPane.getButtons().get(buttonOrder[j]);
-                        final Button currentButton = buttonPane.getButtons().get(buttonOrder[j]);
-                        PauseTransition highlight = createHighlightTransition(buttonToHighlight, "orange");
-                        PauseTransition highlightCurrent = createHighlightTransition(currentButton, "orange");
-                        PauseTransition delay = new PauseTransition(Duration.millis(500));
-                        sequence.getChildren().addAll(highlight, highlightCurrent, delay);
+                        sequence.getChildren().add(createHighlightTransition(buttonCurrent, buttonAux, "green"));
+                        sequence.getChildren().add(createUnhighlightTransition(buttonCurrent, buttonAux));
 
-                        sequence.getChildren().add(createHighlightPause(9));
                         addVariableUpdateToSequence(i, j, gap, aux);
+                        final Button buttonJ = buttonPane.getButtons().get(buttonOrder[j + gap]);
+                        final Button buttonAux2 = buttonPane.getButtons().get(buttonOrder[j]);
+
+                        sequence.getChildren().add(createHighlightTransition(buttonJ, buttonAux2, "orange"));
 
                         arr[j + gap] = arr[j];
                         sequence.getChildren().add(createHighlightPause(10));
@@ -100,14 +105,12 @@ public class ShellSortAnimation extends SortAnimation {
                         addVariableUpdateToSequence(i, j, gap, aux);
 
                         animateIterative(j + gap, j);
+                        sequence.getChildren().add(createUnhighlightTransition(buttonCurrent, buttonAux));
+                        sequence.getChildren().add(createUnhighlightTransition(buttonJ, buttonAux2));
+                    } else {
+                        sequence.getChildren().add(createHighlightTransition(buttonCurrent, buttonAux, "red"));
                     }
-                    final Button buttonToHighlight = buttonPane.getButtons().get(buttonOrder[i]);
-                    final Button currentButton = buttonPane.getButtons().get(buttonOrder[j]);
-                    PauseTransition unhighlight = createUnhighlightTransition(buttonToHighlight);
-                    PauseTransition unhighlightCurrent = createUnhighlightTransition(currentButton);
-                    PauseTransition delay = new PauseTransition(Duration.millis(500));
-                    sequence.getChildren().addAll(unhighlight, unhighlightCurrent, delay);
-
+                    sequence.getChildren().add(createUnhighlightTransition(buttonCurrent, buttonAux));
                     updateVariablesDisplay(i, j, gap, aux);
                 }
                 sequence.getChildren().add(createHighlightPause(13));
@@ -127,23 +130,52 @@ public class ShellSortAnimation extends SortAnimation {
     }
 
     public void updateVariablesDisplay(int i, int j, int gap, int aux) {
-        // Cria objetos Text para cada variável
         Text textI = new Text("i: " + i + "\n");
         textI.setFont(Font.font("System", 20));
         Text textJ = new Text("j: " + j + "\n");
         textJ.setFont(Font.font("System", 20));
         Text textGap = new Text("gap: " + gap + "\n");
         textGap.setFont(Font.font("System", 20));
+        Text textJGap = new Text("j + gap: " + (j + gap) + "\n");
+        textJGap.setFont(Font.font("System", 20));
         Text textAux = new Text("aux: " + aux + "\n");
-        textAux.setFont(Font.font("System", FontWeight.BOLD, 20)); // Exemplo de fazer 'aux' em negrito
+        textAux.setFont(Font.font("System", FontWeight.BOLD, 20));
+
+        Text textObs = new Text("\n\nObs: \n");
+        textObs.setFont(Font.font("System", 20));
+
+        Text textRed = new Text("Vermelho: ");
+        textRed.setFill(Color.RED);
+        textRed.setFont(Font.font("System", 20));
+
+        Text textFalse = new Text("Resultado da comparação é falso\n");
+        textFalse.setFill(Color.RED);
+        textFalse.setFont(Font.font("System", 20));
+
+        Text textGreen = new Text("Verde: ");
+        textGreen.setFill(Color.GREEN);
+        textGreen.setFont(Font.font("System", 20));
+
+        Text textTrue = new Text("Resultado da comparação é verdadeiro\n");
+        textTrue.setFill(Color.GREEN);
+        textTrue.setFont(Font.font("System", 20));
 
         Platform.runLater(() -> {
             variablesArea.getChildren().clear();
-            variablesArea.getChildren().addAll(textI, textJ, textGap, textAux);
+            variablesArea.getChildren().addAll(
+                textI,
+                textJ,
+                textGap,
+                textJGap,
+                textAux,
+                textObs,
+                textRed,
+                textFalse,
+                textGreen,
+                textTrue
+            );
         });
-
     }
-
 
     protected PauseTransition createHighlightPause(int lineNumber) {
         PauseTransition highlightPause = new PauseTransition(Duration.millis(1000));

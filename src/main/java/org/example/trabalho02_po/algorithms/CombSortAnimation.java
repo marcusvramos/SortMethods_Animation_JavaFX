@@ -4,6 +4,7 @@ import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -75,20 +76,13 @@ public class CombSortAnimation extends SortAnimation {
             while((index + gap) < n) {
                 addVariableUpdateToSequence(gap, index);
                 sequence.getChildren().add(createHighlightPause(8));
-
+                final Button buttonCurrent = buttonPane.getButtons().get(buttonOrder[index]);
+                final Button buttonGap = buttonPane.getButtons().get(buttonOrder[index + gap]);
                 sequence.getChildren().add(createHighlightPause(9));
-                final Button buttonToHighlight = buttonPane.getButtons().get(buttonOrder[index+gap]);
-                final Button currentButton = buttonPane.getButtons().get(buttonOrder[index]);
-                PauseTransition highlight = createHighlightTransition(buttonToHighlight, "orange");
-                PauseTransition highlightCurrent = createHighlightTransition(currentButton, "orange");
-                PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
-                sequence.getChildren().addAll(highlight, highlightCurrent, delay);
+
+                sequence.getChildren().add(createHighlightTransition(buttonCurrent, buttonGap, "orange"));
                 if(arr[index] > arr[index + gap]) {
-                    final Button buttonI = buttonPane.getButtons().get(buttonOrder[index+gap]);
-                    final Button indexGapButton = buttonPane.getButtons().get(buttonOrder[index]);
-                    PauseTransition highlightI = createHighlightTransition(buttonI, "orange");
-                    PauseTransition highlightCurrentGAPi = createHighlightTransition(indexGapButton, "orange");
-                    sequence.getChildren().addAll(highlightI, highlightCurrentGAPi);
+                    sequence.getChildren().add(createHighlightTransition(buttonCurrent, buttonGap, "green"));
 
                     addVariableUpdateToSequence(gap, index);
                     sequence.getChildren().add(createHighlightPause(9));
@@ -102,14 +96,11 @@ public class CombSortAnimation extends SortAnimation {
                     arr[index + gap] = temp;
                     sequence.getChildren().add(createHighlightPause(12));
                     animateIterative(index + gap, index);
-                    PauseTransition unhighlight = createUnhighlightTransition(buttonI);
-                    PauseTransition unhighlightCurrent = createUnhighlightTransition(indexGapButton);
-                    sequence.getChildren().addAll(unhighlight, unhighlightCurrent);
+                } else {
+                    sequence.getChildren().add(createHighlightTransition(buttonCurrent, buttonGap, "red"));
                 }
 
-                PauseTransition unhighlight = createUnhighlightTransition(buttonToHighlight);
-                PauseTransition unhighlightCurrent = createUnhighlightTransition(currentButton);
-                sequence.getChildren().addAll(unhighlight, unhighlightCurrent);
+                sequence.getChildren().add(createUnhighlightTransition(buttonCurrent, buttonGap));
 
                 index++;
                 addVariableUpdateToSequence(gap, index);
@@ -132,17 +123,37 @@ public class CombSortAnimation extends SortAnimation {
     public void updateVariablesDisplay(int gap, int index) {
         Text textGap = new Text("gap: " + gap + "\n");
         textGap.setFont(Font.font("System", 20));
+
         Text textIndex = new Text("index: " + index + "\n");
         textIndex.setFont(Font.font("System", 20));
+
         Text textIndexGap = new Text("(index + gap): " + (index + gap) + "\n");
         textIndexGap.setFont(Font.font("System", 20));
 
+        Text textObs = new Text("\n\nObs: \n");
+        textObs.setFont(Font.font("System", 20));
+
+        Text textRed = new Text("Vermelho: ");
+        textRed.setFill(Color.RED);
+        textRed.setFont(Font.font("System", 20));
+
+        Text textFalse = new Text("Resultado da comparação é falso\n");
+        textFalse.setFill(Color.RED);
+        textFalse.setFont(Font.font("System", 20));
+
+        Text textGreen = new Text("Verde: ");
+        textGreen.setFill(Color.GREEN);
+        textGreen.setFont(Font.font("System", 20));
+
+        Text textTrue = new Text("Resultado da comparação é verdadeiro\n");
+        textTrue.setFill(Color.GREEN);
+        textTrue.setFont(Font.font("System", 20));
+
         Platform.runLater(() -> {
             variablesArea.getChildren().clear();
-            variablesArea.getChildren().addAll(textGap, textIndex, textIndexGap);
+            variablesArea.getChildren().addAll(textGap, textIndex, textIndexGap, textObs, textRed, textFalse, textGreen, textTrue);
         });
     }
-
 
     protected PauseTransition createHighlightPause(int lineNumber) {
         PauseTransition highlightPause = new PauseTransition(Duration.millis(1000));

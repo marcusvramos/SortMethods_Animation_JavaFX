@@ -7,6 +7,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import org.example.trabalho02_po.algorithms.CombSortAnimation;
 import org.example.trabalho02_po.algorithms.ShellSortAnimation;
@@ -16,6 +19,7 @@ public class MainWindow extends BorderPane {
     private ButtonPane buttonPane;
 
     private TextArea codeArea;
+    private TextFlow descriptionArea;
 
     private final String shellSortCode = """
         private void sort(int[] arr) {
@@ -81,6 +85,8 @@ public class MainWindow extends BorderPane {
 
     private TextFlow variablesArea;
 
+    private HBox auxButtonContainer;
+
 
     public MainWindow() {
         setupUI();
@@ -92,18 +98,32 @@ public class MainWindow extends BorderPane {
         setupCodeArea();
         HBox actionButtons = setupButtons();
 
+        auxButtonContainer = new HBox();
+        auxButtonContainer.setAlignment(Pos.CENTER);
+        auxButtonContainer.setPadding(new Insets(10));
+        auxButtonContainer.setVisible(false);
+
+        descriptionArea = new TextFlow();
+        descriptionArea.setPadding(new Insets(10));
+        descriptionArea.setStyle("-fx-background-color: #eef1f5; -fx-border-color: blue; -fx-border-width: 2;");
+        descriptionArea.setMinHeight(100);
+        String descriptionTitle = "Descrição das Movimentações: \n";
+        Text descriptionText = new Text(descriptionTitle);
+        descriptionText.setFont(Font.font("System", FontWeight.BOLD, 20));
+        descriptionArea.getChildren().add(descriptionText);
+        descriptionArea.setVisible(false);
+
         VBox leftContainer = new VBox(20);
-        leftContainer.getChildren().addAll(actionButtons, buttonPane, variablesArea);
+        leftContainer.getChildren().addAll(actionButtons, auxButtonContainer, buttonPane, variablesArea, descriptionArea);
         leftContainer.setAlignment(Pos.TOP_LEFT);
 
-        VBox.setMargin(buttonPane, new Insets(80, 0, 0, 0));
-        VBox.setMargin(variablesArea, new Insets(80, 0, 0, 0));
-
+        VBox.setMargin(buttonPane, new Insets(20, 0, 0, 0));
+        VBox.setMargin(variablesArea, new Insets(20, 0, 0, 0));
+        VBox.setMargin(descriptionArea, new Insets(20, 0, 0, 0));
 
         this.setLeft(leftContainer);
         this.setRight(codeArea);
     }
-
 
 
     private HBox setupButtons() {
@@ -175,7 +195,28 @@ public class MainWindow extends BorderPane {
     }
 
     private void startShellSort02() {
-        ShellSortCopyAnimation shellSortAnimation = new ShellSortCopyAnimation(buttonPane, codeArea, variablesArea);
+        Button auxButton = new Button("Aux Placeholder");
+        auxButton.setFont(Font.font("System", FontWeight.BOLD, 20));
+        auxButton.setStyle("-fx-background-color: lightblue; -fx-text-fill: black;");
+
+        auxButtonContainer.getChildren().clear();
+        auxButtonContainer.getChildren().add(auxButton);
+
+        if (!auxButtonContainer.isVisible()) {
+            auxButtonContainer.setVisible(true);
+        }
+
+        if (!descriptionArea.isVisible()) {
+            descriptionArea.setVisible(true);
+        }
+
+        ShellSortCopyAnimation shellSortAnimation = new ShellSortCopyAnimation(
+                buttonPane,
+                codeArea,
+                variablesArea,
+                auxButtonContainer,
+                descriptionArea
+        );
         shellSortAnimation.startSort();
     }
 
@@ -189,6 +230,7 @@ public class MainWindow extends BorderPane {
         setupUI();
         codeArea.clear();
         variablesArea.getChildren().clear();
+        auxButtonContainer.setVisible(false);
     }
 }
 
