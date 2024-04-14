@@ -208,7 +208,7 @@ public class ShellSortCopyAnimation extends SortAnimation {
     }
 
     private void addDescriptionSequence(int j, int aux, boolean isAux) {
-        PauseTransition pause = new PauseTransition(Duration.millis(500));
+        PauseTransition pause = new PauseTransition(Duration.millis(1000));
         sequence.getChildren().add(pause);
         pause.setOnFinished(e -> updateDescription(j, aux, isAux));
     }
@@ -239,9 +239,9 @@ public class ShellSortCopyAnimation extends SortAnimation {
     }
 
     private void copyButtonValue(Button fromButton, Button toButton) {
-        FadeTransition fadeOut = new FadeTransition(Duration.millis(250), toButton);
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(800), toButton);
         fadeOut.setToValue(0.0);
-        FadeTransition fadeIn = new FadeTransition(Duration.millis(250), toButton);
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(800), toButton);
         fadeIn.setToValue(1.0);
         fadeOut.setOnFinished(e -> toButton.setText(fromButton.getText()));
 

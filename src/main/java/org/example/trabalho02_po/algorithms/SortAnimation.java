@@ -8,11 +8,7 @@ import javafx.scene.control.TextArea;
 import javafx.util.Duration;
 import org.example.trabalho02_po.view.ButtonPane;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class SortAnimation {
-    protected List<Integer[]> transitions = new ArrayList<>();
     protected SequentialTransition sequence = new SequentialTransition();
     protected int[] buttonOrder;
     protected ButtonPane buttonPane;
@@ -86,7 +82,7 @@ public abstract class SortAnimation {
     }
 
     protected PauseTransition createHighlightTransition(Button button1, Button button2, String color) {
-        PauseTransition highlight = new PauseTransition(Duration.millis(1000));
+        PauseTransition highlight = new PauseTransition(Duration.millis(1500));
         highlight.setOnFinished(e -> {
             button1.setStyle("-fx-background-color: " + color + ";");
             button2.setStyle("-fx-background-color: " + color + ";");
